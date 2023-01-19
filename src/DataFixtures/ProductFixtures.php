@@ -7,6 +7,7 @@ use App\Entity\ProductCategory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Exception;
 
 class ProductFixtures extends Fixture implements DependentFixtureInterface, FixtureDataAwareInterface
 {
@@ -37,20 +38,24 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface, Fixt
                 ->setDescription($fixture['description'])
                 ->setAmount($fixture['amount'])
                 ->setPrice($fixture['price'])
-                ->setProductCategory($fixture['product_category']);
+                ->setProductCategory($fixture['product_category'])
+                ->setSlug($fixture['slug'])
+                ->setImage($fixture['image'])
+                ->setMadeIn($fixture['made_in'])
+                ->setActive($fixture['active'])
+                ->setSearchQueries($fixture['search_queries'])
+            ;
 
             $manager->persist($entity);
 
             $this->addReference(sprintf('%s_%s', Product::class, $fixture['title']), $entity);
-            $manager->flush();
-
-            sleep(1);
         }
+
+        $manager->flush();
     }
 
     /**
-     * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     public function getFixturesData(): array
     {
@@ -61,6 +66,11 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface, Fixt
                 'amount' => 3,
                 'price' => 210.45,
                 'product_category' => $this->getReference(sprintf('%s_%s', ProductCategory::class, 'Одяг')),
+                'slug' => '210-T',
+                'image' => 'https://waudog.ua/image/cache/catalog/products2/5422-0148_00_03-1200x1200.jpg',
+                'made_in' => 'Ukraine',
+                'active' => true,
+                'search_queries' => ['test1', 'test2', 'test3'],
             ],
             [
                 'title' => 'Курточка для собак COLLAR WAUDOG Clothes світловідбивна',
@@ -68,6 +78,11 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface, Fixt
                 'amount' => 2,
                 'price' => 1294,
                 'product_category' => $this->getReference(sprintf('%s_%s', ProductCategory::class, 'Одяг')),
+                'slug' => '1294-T',
+                'image' => 'https://waudog.ua/image/cache/catalog/products2/5304_00_01-1200x1200.jpg',
+                'made_in' => 'Ukraine',
+                'active' => true,
+                'search_queries' => ['test10', 'test20', 'test30'],
             ],
         ];
     }

@@ -11,7 +11,8 @@ class ProductListResponse
      */
     public function __construct(
         private readonly array $items,
-    ) {}
+    ) {
+    }
 
     /**
      * @return ProductListItem[]

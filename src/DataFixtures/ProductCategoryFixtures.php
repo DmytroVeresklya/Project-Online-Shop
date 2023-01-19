@@ -2,11 +2,11 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Product;
 use App\Entity\ProductCategory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Exception;
 
 class ProductCategoryFixtures extends Fixture implements DependentFixtureInterface, FixtureDataAwareInterface
 {
@@ -33,31 +33,30 @@ class ProductCategoryFixtures extends Fixture implements DependentFixtureInterfa
         foreach ($fixtures as $fixture) {
             $entity = (new ProductCategory())
                 ->setTitle($fixture['title'])
-                ->setSlug($fixture['slug']);
+                ->setSlug($fixture['slug'])
+            ;
 
             $manager->persist($entity);
 
             $this->addReference(sprintf('%s_%s', ProductCategory::class, $fixture['title']), $entity);
-            $manager->flush();
-
-            sleep(1);
         }
+
+        $manager->flush();
     }
 
     /**
-     * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     public function getFixturesData(): array
     {
         return [
             [
                 'title' => 'Одяг',
-                'slug' => 'Clothes'
+                'slug' => 'Clothes',
             ],
             [
                 'title' => 'Амуніція',
-                'slug' => 'Ammunition'
+                'slug' => 'Ammunition',
             ],
         ];
     }

@@ -11,7 +11,8 @@ class ProductCategoryListResponse
      */
     public function __construct(
         private readonly array $items,
-    ) {}
+    ) {
+    }
 
     /**
      * @return ProductCategoryListItem[]
@@ -20,5 +21,4 @@ class ProductCategoryListResponse
     {
         return $this->items;
     }
-
 }

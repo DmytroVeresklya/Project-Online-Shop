@@ -4,13 +4,14 @@ namespace App\Repository;
 
 use App\Entity\ProductCategory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<ProductCategory>
  *
- * @method ProductCategory|null find($id, $lockMode = null, $lockVersion = null)
- * @method ProductCategory|null findOneBy(array $criteria, array $orderBy = null)
+ * @method null|ProductCategory find($id, $lockMode = null, $lockVersion = null)
+ * @method null|ProductCategory findOneBy(array $criteria, array $orderBy = null)
  * @method ProductCategory[]    findAll()
  * @method ProductCategory[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
@@ -37,5 +38,18 @@ class ProductCategoryRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    /**
+     * @return ProductCategory[]
+     */
+    public function findAllSortByTitle(): array
+    {
+        return $this->findBy([], ['title' => Criteria::ASC]);
+    }
+
+    public function existById(int $id): bool
+    {
+        return null !== $this->find($id);
     }
 }

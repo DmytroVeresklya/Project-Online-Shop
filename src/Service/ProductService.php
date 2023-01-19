@@ -3,36 +3,50 @@
 namespace App\Service;
 
 use App\Entity\Product;
-use App\Entity\ProductCategory;
-use App\Model\ProductCategoryListResponse;
+use App\Exception\ProductCategoryNotFoundException;
 use App\Model\ProductListResponse;
-use App\ModelItem\ProductCategoryListItem;
 use App\ModelItem\ProductListItem;
 use App\Repository\ProductCategoryRepository;
 use App\Repository\ProductRepository;
-use Doctrine\Common\Collections\Criteria;
 
 class ProductService
 {
     public function __construct(
-        private readonly ProductRepository $productRepository,
-    ) {}
+        private readonly ProductRepository         $productRepository,
+        private readonly ProductCategoryRepository $productCategoryRepository
+    ) {
+    }
 
-    public function getProducts(): ProductListResponse
+    /**
+     * @throws ProductCategoryNotFoundException
+     */
+    public function getProductsByCategory(int $categoryId): ProductListResponse
     {
-        $categories = $this->productRepository->findBy([], ['title' => Criteria::ASC]);
-        $items = array_map(
-            fn (Product $product) => new ProductListItem(
-                $product->getId(),
-                $product->getTitle(),
-                $product->getDescription(),
-                $product->getAmount(),
-                $product->getPrice(),
-                $product->getProductCategory()->getTitle()
-            ),
-            $categories
-        );
+        if (!$this->productCategoryRepository->existById($categoryId)) {
+            throw new ProductCategoryNotFoundException();
+        }
 
-        return new ProductListResponse($items);
+        return new ProductListResponse(array_map(
+            [$this, 'map'],
+            $this->productRepository->findByCategoryId($categoryId)
+        ));
+    }
+
+    private function map(Product $product): ProductListItem
+    {
+        return (new ProductListItem())
+            ->setId($product->getId())
+            ->setTitle($product->getTitle())
+            ->setDescription($product->getDescription())
+            ->setAmount($product->getAmount())
+            ->setPrice($product->getPrice())
+            ->setProductCategory($product->getProductCategory()->getTitle())
+            ->setSlug($product->getSlug())
+            ->setImage($product->getImage())
+            ->setMadeIn($product->getMadeIn())
+            ->setCreatedAt($product->getCreatedAt()->getTimestamp())
+            ->setActive($product->isActive())
+            ->setSearchQueries($product->getSearchQueries())
+        ;
     }
 }

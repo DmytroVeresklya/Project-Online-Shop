@@ -2,15 +2,14 @@
 
 namespace App\ModelItem;
 
-use Doctrine\Common\Collections\Collection;
-
 class ProductCategoryListItem
 {
     public function __construct(
-        private int        $id,
-        private string     $title,
-        private string     $slug,
-    ) {}
+        private int    $id,
+        private string $title,
+        private string $slug,
+    ) {
+    }
 
     public function getId(): int
     {
@@ -26,5 +25,4 @@ class ProductCategoryListItem
     {
         return $this->slug;
     }
-
 }

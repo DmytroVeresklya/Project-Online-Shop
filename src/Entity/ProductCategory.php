@@ -11,15 +11,15 @@ use Doctrine\ORM\Mapping as ORM;
 class ProductCategory
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: "SEQUENCE")]
-    #[ORM\SequenceGenerator(sequenceName: "product_category_id", allocationSize: 1, initialValue: 100)]
+    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\SequenceGenerator(sequenceName: 'product_category_id', allocationSize: 1, initialValue: 100)]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 127)]
+    #[ORM\Column(name: 'title', length: 127, nullable: false)]
     private string $title;
 
-    #[ORM\Column(length: 127, nullable: false)]
+    #[ORM\Column(name: 'slug', length: 127, nullable: false)]
     private string $slug;
 
     #[ORM\OneToMany(mappedBy: 'productCategory', targetEntity: Product::class)]

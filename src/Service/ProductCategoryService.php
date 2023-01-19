@@ -12,11 +12,12 @@ class ProductCategoryService
 {
     public function __construct(
         private readonly ProductCategoryRepository $productCategoryRepository,
-    ) {}
+    ) {
+    }
 
     public function getCategories(): ProductCategoryListResponse
     {
-        $categories = $this->productCategoryRepository->findBy([], ['title' => Criteria::ASC]);
+        $categories = $this->productCategoryRepository->findAllSortByTitle();
         $items = array_map(
             fn (ProductCategory $productCategory) => new ProductCategoryListItem(
                 $productCategory->getId(),
