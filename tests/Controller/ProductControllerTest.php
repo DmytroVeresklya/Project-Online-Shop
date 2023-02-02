@@ -20,7 +20,7 @@ class ProductControllerTest extends AbstractControllerTest
      * @throws OptimisticLockException
      * @throws ORMException
      */
-    public function testProductsByCategory()
+    public function testProductControllerProductsByCategory()
     {
         $category = $this->createCategory();
         $categoryId = $category->getId();

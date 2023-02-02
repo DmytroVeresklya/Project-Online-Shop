@@ -43,4 +43,9 @@ class ProductRepository extends ServiceEntityRepository
     {
         return $this->findBy(['productCategory' => $categoryId]);
     }
+
+    public function existBySlug(string $slug): bool
+    {
+        return null !== $this->findOneBy(['slug' => $slug]);
+    }
 }

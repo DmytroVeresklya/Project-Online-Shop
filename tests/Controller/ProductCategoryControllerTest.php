@@ -17,7 +17,7 @@ class ProductCategoryControllerTest extends AbstractControllerTest
     /**
      * @throws ORMException
      */
-    public function testGetCategoriesProductCategory()
+    public function testProductCategoryControllerGetCategories()
     {
         $this->em->persist(
             (new ProductCategory())
