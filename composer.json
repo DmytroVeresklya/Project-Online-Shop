@@ -10,12 +10,30 @@
         "doctrine/doctrine-bundle": "^2.8",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.14",
+        "gesdinet/jwt-refresh-token-bundle": "^1.1",
+        "lexik/jwt-authentication-bundle": "^2.16",
+        "nelmio/api-doc-bundle": "^4.10",
+        "nelmio/cors-bundle": "^2.2",
+        "phpdocumentor/reflection-docblock": "^5.3",
+        "phpstan/phpdoc-parser": "^1.15",
+        "symfony/asset": "6.2.*",
         "symfony/console": "6.2.*",
         "symfony/dotenv": "6.2.*",
         "symfony/flex": "^2",
         "symfony/framework-bundle": "6.2.*",
+        "symfony/http-kernel": "6.2.*",
+        "symfony/mime": "6.2.*",
+        "symfony/monolog-bundle": "^3.8",
+        "symfony/property-access": "6.2.*",
+        "symfony/property-info": "6.2.*",
         "symfony/runtime": "6.2.*",
-        "symfony/yaml": "6.2.*"
+        "symfony/serializer": "6.2.*",
+        "symfony/twig-bundle": "6.2.*",
+        "symfony/uid": "6.2.*",
+        "symfony/validator": "6.2.*",
+        "symfony/yaml": "6.2.*",
+        "twig/extra-bundle": "^2.12|^3.0",
+        "twig/twig": "^2.12|^3.0"
     },
     "config": {
         "allow-plugins": {
@@ -44,6 +62,20 @@
         "symfony/polyfill-php81": "*"
     },
     "scripts": {
+        "check-queue": "APP_ENV=test php bin/console messenger:consume async -vv",
+        "check-db-dev": "bin/console doctrine:schema:validate --env=dev",
+        "prepare-test": "bin/console doctrine:schema:update --force",
+        "reload-fixtures-test": "bin/console doctrine:fixtures:load --purge-with-truncate --no-interaction",
+        "start-dev-all": "php bin/console messenger:consume async --env dev & symfony serve --env dev",
+        "start-dev": "APP_ENV=dev symfony serve",
+        "start-dev-messenger": "bin/console messenger:consume async --env dev -vv",
+        "stop-dev": "APP_ENV=dev symfony server:stop",
+        "logs-dev": "APP_ENV=dev symfony server:logs",
+        "clear-dev": "bin/console cache:clear --env=dev",
+        "clear-test": "bin/console cache:clear --env=test",
+        "test": "vendor/bin/phpunit -vv",
+        "test-dev": "vendor/bin/phpunit --stop-on-failure",
+        "test-pushy": "bin/console pushy:test-device 1d86aa212b01d1eb40806d 9a6eabbf5ace18a7c43ac7c98210a6d667bd84261d3139aba45ca84f493e1a18",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
@@ -64,5 +96,14 @@
             "require": "6.2.*",
             "docker": true
         }
+    },
+    "require-dev": {
+        "dama/doctrine-test-bundle": "^7.1",
+        "doctrine/doctrine-fixtures-bundle": "^3.4",
+        "helmich/phpunit-json-assert": "^3.4",
+        "phpunit/phpunit": "^9.5",
+        "symfony/browser-kit": "6.2.*",
+        "symfony/css-selector": "6.2.*",
+        "symfony/phpunit-bridge": "^6.2"
     }
 }
