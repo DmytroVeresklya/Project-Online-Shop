@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\ProductCategory;
 
 use App\Model\ProductCategoryListResponse;
 use App\Service\ProductCategoryService;
@@ -10,13 +10,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/api/product/category', methods: 'GET')]
 #[OA\Response(
     response: 200,
     description: 'Return product categories',
     content: new Model(type: ProductCategoryListResponse::class)
 )]
-class ProductCategoryController extends AbstractController
+#[Route(path: '/api/product/category', methods: 'GET')]
+final class ProductCategoryGetAction extends AbstractController
 {
     public function __construct(
         private readonly ProductCategoryService $productCategoryService,

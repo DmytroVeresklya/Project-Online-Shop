@@ -26,22 +26,27 @@ use OpenApi\Attributes as OA;
         content: new Model(type: ErrorResponse::class)
     ),
     OA\Response(
-        response: 400,
-        description: 'Product with same title already exist',
+        response: 409,
+        description: 'Product not found',
+        content: new Model(type: ErrorResponse::class)
+    ),
+    OA\Response(
+        response: 409,
+        description: 'Product already exist',
         content: new Model(type: ErrorResponse::class)
     ),
     OA\RequestBody(content: new Model(type: ProductUpdateRequest::class))
 ]
-#[Route(path: '/api/editor/product/create', methods: ['POST'])]
-final class CreateProductPostAction extends AbstractController
+#[Route(path: '/api/editor/product/{id}/update', methods: ['PUT'])]
+final class UpdateProductPutAction extends AbstractController
 {
     public function __construct(
         private readonly EditorProductService $editorProductService,
     ) {
     }
 
-    public function __invoke(#[RequestBody] ProductUpdateRequest $request): JsonResponse
+    public function __invoke($id, #[RequestBody] ProductUpdateRequest $request): JsonResponse
     {
-        return $this->json($this->editorProductService->createProduct($request));
+        return $this->json($this->editorProductService->updateProduct($id, $request));
     }
 }

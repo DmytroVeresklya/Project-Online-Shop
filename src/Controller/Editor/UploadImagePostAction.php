@@ -5,7 +5,7 @@ namespace App\Controller\Editor;
 use App\Attribute\RequestFile;
 use App\Model\Editor\UploadCoverResponse;
 use App\Model\ErrorResponse;
-use App\Service\EditorService;
+use App\Service\EditorProductService;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -29,9 +29,9 @@ use Symfony\Component\Validator\Constraints\NotNull;
     ),
 ]
 #[Route(path: '/api/editor/product/{id}/upload/image', methods: ['POST'])]
-class UploadImagePostAction extends AbstractController
+final class UploadImagePostAction extends AbstractController
 {
-    public function __construct(private EditorService $editorService)
+    public function __construct(private readonly EditorProductService $editorProductService)
     {
     }
 
@@ -42,6 +42,6 @@ class UploadImagePostAction extends AbstractController
         new Image(maxSize: '1M', mimeTypes: ['image/jpeg', 'image/png', 'image/jpg']),
     ])] UploadedFile $file
     ): JsonResponse {
-        return $this->json($this->editorService->uploadCover($id, $file));
+        return $this->json($this->editorProductService->uploadCover($id, $file));
     }
 }

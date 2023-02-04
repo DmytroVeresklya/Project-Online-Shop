@@ -8,6 +8,8 @@ parameters:
     exceptions:
         Symfony\Component\HttpKernel\Exception\NotFoundHttpException: { code: 404 }
         App\Exception\ProductCategoryNotFoundException: { code: 404, hidden: false }
+        App\Exception\ProductCategoryNotEmptyException: { code: 400, hidden: false }
+        App\Exception\ProductCategoryAlreadyExistException: { code: 409, hidden: false }
         App\Exception\SubscriberAlreadyExistException: { code: 409, hidden: false }
         App\Exception\RequestBodyConvertException: { code: 400, hidden: false }
         App\Exception\UserAlreadyExistException: { code: 409, hidden: false }
@@ -36,12 +38,12 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    App\Service\ExceptionHandler\ExceptionMappingResolver:
-        arguments: ['%exceptions%']
-
-    App\EventListener\ApiExceptionListener:
-        tags:
-            - { name: kernel.event_listener, event: kernel.exception, priority: 10}
+#    App\Service\ExceptionHandler\ExceptionMappingResolver:
+#        arguments: ['%exceptions%']
+#
+#    App\EventListener\ApiExceptionListener:
+#        tags:
+#            - { name: kernel.event_listener, event: kernel.exception, priority: 10}
 
     App\EventListener\ValidationExceptionListener:
         tags:

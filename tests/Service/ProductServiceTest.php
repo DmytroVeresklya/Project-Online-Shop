@@ -89,11 +89,7 @@ class ProductServiceTest extends AbstractTestCase
             ->setPrice(400)
             ->setProductCategory('test_category_title')
             ->setSlug('test Slug')
-            ->setCreatedAt((new DateTime('NOW'))->getTimestamp())
             ->setImage('test Image')
-            ->setMadeIn('test Made_in')
-            ->setActive(false)
-            ->setSearchQueries(['test01'])
-        ;
+            ->setMadeIn('test Made_in');
     }
 }

@@ -23,7 +23,7 @@ use Symfony\Component\Routing\Annotation\Route;
     )
 ]
 #[Route(path: '/api/admin/grantEditor/{userId}', methods: ['POST'])]
-class AdminController extends AbstractController
+final class AdminController extends AbstractController
 {
     public function __construct(
         private readonly RoleService $roleService,

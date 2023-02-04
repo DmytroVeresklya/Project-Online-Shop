@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Controller\Editor;
+
 use App\Model\ErrorResponse;
-use App\Service\EditorService;
+use App\Service\EditorProductService;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,16 +16,16 @@ use OpenApi\Attributes as OA;
     OA\Response(response: 404, description: 'Product not found', content: new Model(type: ErrorResponse::class)),
 ]
 #[Route(path: '/api/editor/delete/product/{id}', methods: ['DELETE'])]
-class DeleteProductDeleteAction extends AbstractController
+final class DeleteProductDeleteAction extends AbstractController
 {
     public function __construct(
-        private readonly EditorService $editorService,
+        private readonly EditorProductService $editorProductService,
     ) {
     }
 
     public function __invoke(int $id): JsonResponse
     {
-        $this->editorService->deleteProduct($id);
+        $this->editorProductService->deleteProduct($id);
 
         return $this->json(null);
     }

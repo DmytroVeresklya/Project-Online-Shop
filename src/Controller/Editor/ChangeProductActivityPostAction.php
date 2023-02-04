@@ -5,10 +5,10 @@ namespace App\Controller\Editor;
 use App\Attribute\RequestBody;
 use App\Exception\ProductNotFoundException;
 use App\Model\Editor\ActivateProductRequest;
-use App\Model\Editor\CreateProductRequest;
+use App\Model\Editor\ProductUpdateRequest;
 use App\Model\ErrorResponse;
 use App\Model\IdResponse;
-use App\Service\EditorService;
+use App\Service\EditorProductService;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,15 +29,15 @@ use OpenApi\Attributes as OA;
     OA\RequestBody(content: new Model(type: ActivateProductRequest::class))
 ]
 #[Route(path: '/api/editor/change/product/{id}/activity', methods: ['POST'])]
-class ChangeProductActivityPostAction extends AbstractController
+final class ChangeProductActivityPostAction extends AbstractController
 {
-    public function __construct(private readonly EditorService $editorService)
+    public function __construct(private readonly EditorProductService $editorProductService)
     {
     }
 
     public function __invoke(int $id, #[RequestBody] ActivateProductRequest $request): JsonResponse
     {
-        $this->editorService->changeActivity($id, $request);
+        $this->editorProductService->changeActivity($id, $request);
 
         return $this->json(null);
     }

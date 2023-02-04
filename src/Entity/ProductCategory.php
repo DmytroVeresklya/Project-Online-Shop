@@ -22,6 +22,9 @@ class ProductCategory
     #[ORM\Column(name: 'slug', length: 127, nullable: false)]
     private string $slug;
 
+    #[ORM\Column(name: 'image', length: 127, nullable: true)]
+    private ?string $image = null;
+
     #[ORM\OneToMany(mappedBy: 'productCategory', targetEntity: Product::class)]
     private Collection $products;
 
@@ -88,4 +91,18 @@ class ProductCategory
 
         return $this;
     }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+
 }

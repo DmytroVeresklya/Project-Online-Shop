@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\ProductCategory;
+use App\Exception\ProductCategoryNotFoundException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
@@ -51,5 +52,32 @@ class ProductCategoryRepository extends ServiceEntityRepository
     public function existById(int $id): bool
     {
         return null !== $this->find($id);
+    }
+
+    public function getProductCategoryByTitle(?string $productCategory): ?ProductCategory
+    {
+        return $productCategory ? $this->findOneBy(['title' => $productCategory]) : null;
+    }
+
+    public function getProductCategoryById(int $id): ProductCategory
+    {
+        $productCategory = $this->find($id);
+        if (!$productCategory) {
+            throw new ProductCategoryNotFoundException();
+        }
+
+        return $productCategory;
+    }
+
+    public function countProductsInCategory(int $id): int
+    {
+        $productCategory = $this->getProductCategoryById($id);
+
+        return count($productCategory->getProducts());
+    }
+
+    public function existBySlug(?string $slug): bool
+    {
+        return null !== $this->findOneBy(['slug' => $slug]);
     }
 }

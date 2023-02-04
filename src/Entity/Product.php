@@ -41,7 +41,7 @@ class Product implements EntityDateTimeAwareInterface
     #[ORM\Column(name: 'image', length: 127, nullable: true)]
     private ?string $image = null;
 
-    #[ORM\Column(name: 'made_in', type: 'string')]
+    #[ORM\Column(name: 'made_in', type: 'string', nullable: true)]
     private ?string $madeIn = null;
 
     #[ORM\Column(name: 'created_at', type: 'datetime', nullable: false)]

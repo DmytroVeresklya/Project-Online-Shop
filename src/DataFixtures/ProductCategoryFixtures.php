@@ -34,6 +34,7 @@ class ProductCategoryFixtures extends Fixture implements DependentFixtureInterfa
             $entity = (new ProductCategory())
                 ->setTitle($fixture['title'])
                 ->setSlug($fixture['slug'])
+                ->setImage($fixture['image'])
             ;
 
             $manager->persist($entity);
@@ -51,12 +52,14 @@ class ProductCategoryFixtures extends Fixture implements DependentFixtureInterfa
     {
         return [
             [
-                'title' => 'Одяг',
+                'title' => 'Clothes',
                 'slug' => 'Clothes',
+                'image' => null,
             ],
             [
-                'title' => 'Амуніція',
+                'title' => 'Ammunition',
                 'slug' => 'Ammunition',
+                'image' => null,
             ],
         ];
     }

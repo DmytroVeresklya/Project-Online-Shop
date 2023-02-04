@@ -12,7 +12,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/api/subscribe', methods: ['POST'])]
 #[
     OA\Response(
         response: 200,
@@ -30,7 +29,8 @@ use Symfony\Component\Routing\Annotation\Route;
     ),
     OA\RequestBody(content: new Model(type: SubscribeRequest::class))
 ]
-class SubscribeController extends AbstractController
+#[Route('/api/subscribe', methods: ['POST'])]
+final class SubscribeController extends AbstractController
 {
     public function __construct(private readonly SubscribeService $subscriberService)
     {

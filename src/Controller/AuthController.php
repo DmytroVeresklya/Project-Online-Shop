@@ -12,7 +12,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/api/signUp', methods: ['POST'])]
 #[
     OA\Response(
         response: 200,
@@ -35,7 +34,8 @@ use Symfony\Component\Routing\Annotation\Route;
     ),
     OA\RequestBody(content: new Model(type: SignUpRequest::class))
 ]
-class AuthController extends AbstractController
+#[Route(path: '/api/signUp', methods: ['POST'])]
+final class AuthController extends AbstractController
 {
     public function __construct(private readonly SignUpService $signUpService)
     {

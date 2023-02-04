@@ -3,8 +3,9 @@
 namespace App\Model\Editor;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\PositiveOrZero;
 
-class CreateProductRequest
+class ProductUpdateRequest
 {
     #[NotBlank]
     private string $title;
@@ -12,19 +13,20 @@ class CreateProductRequest
     #[NotBlank]
     private string $description;
 
+    #[PositiveOrZero]
     private int $amount = 0;
 
     private float $price = 0;
 
     private ?string $productCategory = null;
 
-    private ?string $image;
+    private ?string $image = null;
 
-    private ?string $madeIn;
+    private ?string $madeIn = null;
 
     private bool $active = false;
 
-    private ?array $searchQueries;
+    private ?array $searchQueries = [];
 
     public function getTitle(): string
     {

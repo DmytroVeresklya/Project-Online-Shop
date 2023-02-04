@@ -43,10 +43,6 @@ class ProductService
             ->setProductCategory($product->getProductCategory()->getTitle())
             ->setSlug($product->getSlug())
             ->setImage($product->getImage())
-            ->setMadeIn($product->getMadeIn())
-            ->setCreatedAt($product->getCreatedAt()->getTimestamp())
-            ->setActive($product->isActive())
-            ->setSearchQueries($product->getSearchQueries())
-        ;
+            ->setMadeIn($product->getMadeIn());
     }
 }

@@ -61,11 +61,11 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface, Fixt
     {
         return [
             [
-                'title' => 'Зимовий комбінезон для собак',
-                'description' => 'Зимовий комбінезон для собак WauDog представляє космічний одяг для ваших улюбленців! Утеплений комбінезон для собак зігріє в холод восени та взимку!',
+                'title' => 'Winter overalls for dogs',
+                'description' => 'The WauDog Winter Jumpsuit for Dogs presents outerwear for your pets! Insulated overalls for dogs will keep you warm in the cold in autumn and winter!',
                 'amount' => 3,
                 'price' => 210.45,
-                'product_category' => $this->getReference(sprintf('%s_%s', ProductCategory::class, 'Одяг')),
+                'product_category' => $this->getReference(sprintf('%s_%s', ProductCategory::class, 'Clothes')),
                 'slug' => '210-T',
                 'image' => 'https://waudog.ua/image/cache/catalog/products2/5422-0148_00_03-1200x1200.jpg',
                 'made_in' => 'Ukraine',
@@ -73,11 +73,11 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface, Fixt
                 'search_queries' => ['test1', 'test2', 'test3'],
             ],
             [
-                'title' => 'Курточка для собак COLLAR WAUDOG Clothes світловідбивна',
-                'description' => 'Мультисезонні світловідбивні курточки з подвійним рядом кнопок, які дають змогу регулювати обсяг, обіцяють стати найяскравішою подією осінньо-зимового сезону',
+                'title' => 'Jacket for dogs COLLAR WAUDOG Clothes reflective',
+                'description' => 'Multi-season reflective jackets with a double row of buttons that allow you to adjust the volume, promise to be the brightest event of the autumn-winter season',
                 'amount' => 2,
                 'price' => 1294,
-                'product_category' => $this->getReference(sprintf('%s_%s', ProductCategory::class, 'Одяг')),
+                'product_category' => $this->getReference(sprintf('%s_%s', ProductCategory::class, 'Clothes')),
                 'slug' => '1294-T',
                 'image' => 'https://waudog.ua/image/cache/catalog/products2/5304_00_01-1200x1200.jpg',
                 'made_in' => 'Ukraine',

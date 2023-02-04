@@ -13,7 +13,7 @@ class UploadService
     private const LINK_PRODUCT_PATTERN = '/upload/product/%d/%s';
 
     public function __construct(
-        private string $uploadDir,
+        private string     $uploadDir,
         private Filesystem $filesystem
     ) {
     }

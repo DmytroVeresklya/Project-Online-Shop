@@ -8,6 +8,7 @@ use App\ModelItem\ProductCategoryListItem;
 use App\Repository\ProductCategoryRepository;
 use App\Service\ProductCategoryService;
 use App\Tests\AbstractTestCase;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * @internal
@@ -27,7 +28,9 @@ class ProductCategoryServiceTest extends AbstractTestCase
             ->willReturn([$category])
         ;
 
-        $service = new ProductCategoryService($repository);
+        $slugger = $this->createMock(SluggerInterface::class);
+
+        $service = new ProductCategoryService($repository, $slugger);
         $expected = new ProductCategoryListResponse([new ProductCategoryListItem(7, 'Тест', 'Test')]);
 
         $this->assertEquals($expected, $service->getCategories());
