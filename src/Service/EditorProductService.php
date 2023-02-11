@@ -6,10 +6,10 @@ use App\Attribute\RequestBody;
 use App\Entity\Product;
 use App\Exception\ProductAlreadyExistException;
 use App\Model\Editor\ActivateProductRequest;
+use App\Model\Editor\ProductCreateRequest;
 use App\Model\Editor\ProductUpdateRequest;
 use App\Model\Editor\UploadCoverResponse;
 use App\Model\IdResponse;
-use App\Model\ProductCategoryUpdateRequest;
 use App\ModelItem\ProductListItem;
 use App\Repository\ProductCategoryRepository;
 use App\Repository\ProductRepository;
@@ -35,7 +35,7 @@ class EditorProductService
         $this->productRepository->save($product, true);
     }
 
-    public function createProduct(#[RequestBody] ProductUpdateRequest $request): IdResponse
+    public function createProduct(#[RequestBody] ProductCreateRequest $request): IdResponse
     {
         $product = new Product();
 
@@ -49,25 +49,30 @@ class EditorProductService
         return new IdResponse($this->upsertProduct($product, $request));
     }
 
-    private function upsertProduct(Product $product, ProductUpdateRequest $request): int
+    private function upsertProduct(Product $product, ProductUpdateRequest|ProductCreateRequest $request): int
     {
-        $slug = $this->slugger->slug($request->getTitle());
-        if ($this->productRepository->existBySlug($slug)) {
-            throw new ProductAlreadyExistException();
+        if ($request->getTitle()) {
+            $slug = $this->slugger->slug($request->getTitle());
+
+            if ($this->productRepository->existBySlug($slug)) {
+                throw new ProductAlreadyExistException();
+            }
+        } else {
+            $slug = $product->getSlug();
         }
 
         $productCategory = $this->productCategoryRepository->getProductCategoryByTitle($request->getProductCategory());
 
-        $product->setTitle($request->getTitle())
-            ->setDescription($request->getDescription())
-            ->setAmount($request->getAmount())
-            ->setPrice($request->getPrice())
-            ->setProductCategory($productCategory)
+        $product->setTitle($request->getTitle() ?? $product->getTitle())
+            ->setDescription($request->getDescription() ?? $product->getDescription())
+            ->setAmount($request->getAmount() ?? $product->getAmount())
+            ->setPrice($request->getPrice() ?? $product->getPrice())
+            ->setProductCategory($productCategory ?? $product->getProductCategory())
             ->setSlug($slug)
-            ->setImage($request->getImage())
-            ->setMadeIn($request->getMadeIn())
-            ->setActive($request->isActive())
-            ->setSearchQueries($request->getSearchQueries());
+            ->setImage($request->getImage() ?? $product->getImage())
+            ->setMadeIn($request->getMadeIn() ?? $product->getMadeIn())
+            ->setActive($request->isActive() ?? $product->isActive())
+            ->setSearchQueries($request->getSearchQueries() ?? $product->getSearchQueries());
 
         $this->productRepository->save($product, true);
 
@@ -111,11 +116,11 @@ class EditorProductService
     {
         return (new ProductListItem())
             ->setId($product->getId())
-            ->setTitle($product->getTitle())
             ->setDescription($product->getDescription())
+            ->setTitle($product->getTitle())
             ->setAmount($product->getAmount())
             ->setPrice($product->getPrice())
-            ->setProductCategory($product->getProductCategory()->getTitle())
+            ->setProductCategory($product->getProductCategory()?->getTitle())
             ->setSlug($product->getSlug())
             ->setImage($product->getImage())
             ->setMadeIn($product->getMadeIn())

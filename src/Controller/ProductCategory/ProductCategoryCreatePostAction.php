@@ -5,7 +5,7 @@ namespace App\Controller\ProductCategory;
 use App\Attribute\RequestBody;
 use App\Model\ErrorResponse;
 use App\Model\IdResponse;
-use App\Model\ProductCategoryListResponse;
+use App\Model\ProductCategoryCreateRequest;
 use App\Model\ProductCategoryUpdateRequest;
 use App\Service\ProductCategoryService;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -30,7 +30,7 @@ use Symfony\Component\Routing\Annotation\Route;
         description: 'Validation failed',
         content: new Model(type: ErrorResponse::class)
     ),
-    OA\RequestBody(content: new Model(type: ProductCategoryUpdateRequest::class))
+    OA\RequestBody(content: new Model(type: ProductCategoryCreateRequest::class))
 ]
 #[Route(path: '/api/editor/product/category/create', methods: 'POST')]
 final class ProductCategoryCreatePostAction extends AbstractController
@@ -40,7 +40,7 @@ final class ProductCategoryCreatePostAction extends AbstractController
     ) {
     }
 
-    public function __invoke(#[RequestBody] ProductCategoryUpdateRequest $request): JsonResponse
+    public function __invoke(#[RequestBody] ProductCategoryCreateRequest $request): JsonResponse
     {
         return $this->json($this->productCategoryService->createProductCategory($request));
     }

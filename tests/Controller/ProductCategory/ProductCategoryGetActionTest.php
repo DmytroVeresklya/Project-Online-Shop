@@ -1,29 +1,29 @@
 <?php
 
-namespace App\Tests\Controller;
+namespace App\Tests\Controller\ProductCategory;
 
 use App\Entity\ProductCategory;
+use App\Repository\ProductCategoryRepository;
 use App\Tests\AbstractControllerTest;
-use Doctrine\ORM\Exception\ORMException;
+use App\Tests\MockUtils;
 
-/**
- *
- * @internal
- *
- * @coversNothing
- */
-class ProductCategoryControllerTest extends AbstractControllerTest
+class ProductCategoryGetActionTest extends AbstractControllerTest
 {
-    /**
-     * @throws ORMException
-     */
-    public function testProductCategoryControllerGetCategories()
+    private ProductCategoryRepository $productCategoryRepository;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->productCategoryRepository = $this->getRepository(ProductCategory::class);
+    }
+
+    public function testProductCategoryGetActionSuccess(): void
     {
         $this->em->persist(
-            (new ProductCategory())
-                ->setTitle('test')
-                ->setSlug('test')
+            MockUtils::createProductCategory()
         );
+        $this->em->flush();
 
         $this->client->request('GET', '/api/product/category');
         $response = json_decode($this->client->getResponse()->getContent(), true);
@@ -41,7 +41,7 @@ class ProductCategoryControllerTest extends AbstractControllerTest
                         'properties' => [
                             'title' => ['type' => 'string'],
                             'slug' => ['type' => 'string'],
-                            'id' => ['type' => 'int'],
+                            'id' => ['type' => 'integer'],
                         ],
                     ],
                 ],

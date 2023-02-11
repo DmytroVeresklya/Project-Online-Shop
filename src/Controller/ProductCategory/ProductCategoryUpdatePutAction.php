@@ -31,7 +31,7 @@ use Symfony\Component\Routing\Annotation\Route;
         content: new Model(type: ErrorResponse::class)
     ),
     OA\Response(
-        response:404,
+        response:400,
         description: 'Validation failed',
         content: new Model(type: ErrorResponse::class)
     ),

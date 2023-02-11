@@ -26,7 +26,7 @@ use OpenApi\Attributes as OA;
         content: new Model(type: ErrorResponse::class)
     ),
     OA\Response(
-        response: 409,
+        response: 404,
         description: 'Product not found',
         content: new Model(type: ErrorResponse::class)
     ),

@@ -2,17 +2,13 @@
 
 namespace App\ArgumentResolver;
 
-use App\Attribute\RequestBody;
 use App\Attribute\RequestFile;
-use App\Exception\RequestBodyConvertException;
 use App\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Throwable;
 
 class RequestFileArgumentResolver implements ArgumentValueResolverInterface
 {
@@ -34,7 +30,7 @@ class RequestFileArgumentResolver implements ArgumentValueResolverInterface
         /** @var UploadedFile $uploadedFile */
         $uploadedFile = $request->files->get($attribute->getField());
 
-        $errors = $this->validator->validate($uploadedFile);
+        $errors = $this->validator->validate($uploadedFile, $attribute->getConstraints());
         if (count($errors) > 0) {
             throw new ValidationException($errors);
         }

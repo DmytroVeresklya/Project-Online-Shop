@@ -7,6 +7,7 @@ use App\Exception\UserAlreadyExistException;
 use App\ModelItem\SignUpRequest;
 use App\Repository\UserRepository;
 use App\Service\SignUpService;
+use App\Tests\MockUtils;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,24 +45,19 @@ class SignUpServiceTest extends TestCase
     public function testSignUp(): void
     {
         $response = new Response();
-        $expectedHasherUser = (new User())
-            ->setRoles(['ROLE_USER'])
-            ->setFirstName('TestName')
-            ->setLastName('TestName')
-            ->setPhoneNumber('99843214')
-            ->setEmail('test@test.com');
+        $expectedHasherUser = MockUtils::createUser()->setRoles(['ROLE_USER']);
 
         $expectedUser = clone $expectedHasherUser;
         $expectedUser->setPassword('hashed_password');
 
         $this->userRepository->expects($this->once())
             ->method('existsByEmail')
-            ->with('test@test.com')
+            ->with('testEmail@test.com')
             ->willReturn(false);
 
         $this->hasher->expects($this->once())
             ->method('hashPassword')
-            ->with($expectedHasherUser, 'testtest')
+            ->with($expectedHasherUser, 'testPassword')
             ->willReturn('hashed_password');
 
         $this->userRepository->expects($this->once())
@@ -74,12 +70,12 @@ class SignUpServiceTest extends TestCase
             ->willReturn($response);
 
         $signUpRequest = (new SignUpRequest())
-            ->setFirstName('TestName')
-            ->setLastName('TestName')
-            ->setPhoneNumber('99843214')
-            ->setEmail('test@test.com')
-            ->setPassword('testtest')
-            ->setConfirmPassword('testtest');
+            ->setFirstName('testFirstName')
+            ->setLastName('testLastName')
+            ->setPhoneNumber('1234567890')
+            ->setEmail('testEmail@test.com')
+            ->setPassword('testPassword')
+            ->setConfirmPassword('testPassword');
 
         $this->assertEquals($response, $this->createService()->signUp($signUpRequest));
     }

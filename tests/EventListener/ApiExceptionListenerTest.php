@@ -191,9 +191,17 @@ class ApiExceptionListenerTest extends AbstractTestCase
         $this->assertResponse(Response::HTTP_NOT_FOUND, $responseBody, $event->getResponse());
     }
 
+    public function testReturnSecurityException(): void
+    {
+        $this->resolver->expects($this->never())
+            ->method('resolve');
+
+        $event = $this->createExceptionEvent(new AuthenticationException());
+        $this->runListener($event, true);
+    }
+
     private function runListener(ExceptionEvent $event, bool $isDebug = false): void
     {
         (new ApiExceptionListener($this->resolver, $this->logger, $this->serializer, $isDebug))($event);
     }
-
 }

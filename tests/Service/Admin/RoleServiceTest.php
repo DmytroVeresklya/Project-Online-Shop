@@ -20,7 +20,7 @@ class RoleServiceTest extends AbstractTestCase
         $this->user           = new User();
         $this->userRepository = $this->createMock(UserRepository::class);
         $this->userRepository->expects($this->once())
-            ->method('getUserForId')
+            ->method('getUserById')
             ->with(10)
             ->willReturn($this->user);
     }
