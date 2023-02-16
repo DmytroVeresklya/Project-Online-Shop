@@ -39,7 +39,7 @@ final class UploadImagePostAction extends AbstractController
         int $id,
         #[RequestFile(field: 'cover', constraints: [
         new NotNull(),
-        new Image(maxSize: '1M', mimeTypes: ['image/jpeg', 'image/png', 'image/jpg']),
+        new Image(maxSize: '2M', mimeTypes: ['image/jpeg', 'image/png', 'image/jpg']),
     ])] UploadedFile $file
     ): JsonResponse {
         return $this->json($this->editorProductService->uploadCover($id, $file));

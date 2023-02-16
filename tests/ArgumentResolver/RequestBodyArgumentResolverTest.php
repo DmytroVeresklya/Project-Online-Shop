@@ -31,7 +31,7 @@ class RequestBodyArgumentResolverTest extends AbstractTestCase
         parent::setUp();
 
         $this->serializer = $this->createMock(SerializerInterface::class);
-        $this->validator = $this->createMock(ValidatorInterface::class);
+        $this->validator  = $this->createMock(ValidatorInterface::class);
     }
 
     public function testSupports(): void
@@ -67,7 +67,7 @@ class RequestBodyArgumentResolverTest extends AbstractTestCase
         $this->createResolver()->resolve($request, $meta)->next();
     }
 
-    public function testResolveThrowsWhenValidate(): void
+    public function testResolveThrowsWhenValidateFailed(): void
     {
         $this->expectException(ValidationException::class);
 

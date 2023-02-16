@@ -4,16 +4,13 @@ namespace App\Tests\Repository;
 
 use App\Entity\Product;
 use App\Entity\ProductCategory;
+use App\Exception\ProductNotFoundException;
 use App\Repository\ProductRepository;
 use App\Tests\AbstractRepositoryTest;
+use App\Tests\MockUtils;
 use DateTime;
 use Doctrine\ORM\Exception\ORMException;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 class ProductRepositoryTest extends AbstractRepositoryTest
 {
     private ProductRepository $productRepository;
@@ -25,16 +22,16 @@ class ProductRepositoryTest extends AbstractRepositoryTest
         $this->productRepository = $this->getRepositoryForEntity(Product::class);
     }
 
-    /**
-     * @throws ORMException
-     */
     public function testFindByCategoryId()
     {
         $devicesCategory = (new ProductCategory())->setTitle('devices')->setSlug('devices');
         $this->em->persist($devicesCategory);
 
         for ($i = 0; $i < 5; ++$i) {
-            $product = $this->createProduct('device-'.$i, $devicesCategory);
+            $product = MockUtils::createProduct($devicesCategory)
+                ->setTitle('devices - '. $i)
+                ->setSlug('devices-'. $i)
+                ->setActive(true);
             $this->em->persist($product);
         }
 
@@ -43,20 +40,30 @@ class ProductRepositoryTest extends AbstractRepositoryTest
         $this->assertCount(5, $this->productRepository->findByCategoryId($devicesCategory->getId()));
     }
 
-    private function createProduct(string $string, ProductCategory $devicesCategory): Product
+    public function testExistBySlug(): void
     {
-        return (new Product())
-            ->setTitle($string)
-            ->setDescription($string)
-            ->setAmount(2)
-            ->setPrice(10)
-            ->setProductCategory($devicesCategory)
-            ->setSlug($string)
-            ->setImage('http://localhost/'.$string.'.png')
-            ->setActive(true)
-            ->setMadeIn($string)
-            ->setCreatedAt(new DateTime('NOW'))
-            ->setModifiedAt(new DateTime('NOW'))
-        ;
+        $slug = 'testExistBySlug';
+
+        $this->em->persist(MockUtils::createProduct()->setSlug($slug));
+        $this->em->flush();
+
+        $this->assertTrue($this->productRepository->existBySlug($slug));
+        $this->assertFalse($this->productRepository->existBySlug($slug . 'SomeText'));
+    }
+
+    public function testGetProductById(): void
+    {
+        $product = MockUtils::createProduct();
+
+        $this->em->persist($product);
+        $this->em->flush();
+
+        $receivedProduct = $this->productRepository->getProductById($product->getId());
+
+        $this->assertEquals($product, $receivedProduct);
+
+        $this->expectException(ProductNotFoundException::class);
+
+        $this->productRepository->getProductById(1);
     }
 }

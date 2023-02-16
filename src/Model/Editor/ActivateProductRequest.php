@@ -6,6 +6,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ActivateProductRequest
 {
+    #[NotBlank]
     private bool $active;
 
     public function isActive(): bool

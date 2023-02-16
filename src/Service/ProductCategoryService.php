@@ -7,6 +7,7 @@ use App\Entity\ProductCategory;
 use App\Exception\ProductCategoryAlreadyExistException;
 use App\Exception\ProductCategoryNotEmptyException;
 use App\Model\IdResponse;
+use App\Model\ProductCategoryCreateRequest;
 use App\Model\ProductCategoryListResponse;
 use App\Model\ProductCategoryUpdateRequest;
 use App\ModelItem\ProductCategoryListItem;
@@ -47,7 +48,7 @@ class ProductCategoryService
         $this->productCategoryRepository->remove($category, true);
     }
 
-    public function createProductCategory(#[RequestBody] ProductCategoryUpdateRequest $request): IdResponse
+    public function createProductCategory(#[RequestBody] ProductCategoryCreateRequest $request): IdResponse
     {
         $productCategory = new ProductCategory();
 
@@ -61,16 +62,22 @@ class ProductCategoryService
         return new IdResponse($this->upsertCategory($productCategory, $request));
     }
 
-    private function upsertCategory(ProductCategory $productCategory, ProductCategoryUpdateRequest $request): int
-    {
-        $slug = $this->slugger->slug($request->getTitle());
-        if ($this->productCategoryRepository->existBySlug($slug)) {
-            throw new ProductCategoryAlreadyExistException();
+    private function upsertCategory(
+        ProductCategory $productCategory,
+        ProductCategoryUpdateRequest|ProductCategoryCreateRequest $request
+    ): int {
+        if ($request->getTitle()) {
+            $slug = $this->slugger->slug($request->getTitle());
+            if ($this->productCategoryRepository->existBySlug($slug)) {
+                throw new ProductCategoryAlreadyExistException();
+            }
+        } else {
+            $slug = $productCategory->getSlug();
         }
 
-        $productCategory->setTitle($request->getTitle())
+        $productCategory->setTitle($request->getTitle() ?? $productCategory->getTitle())
                         ->setSlug($slug)
-                        ->setImage($request->getImage());
+                        ->setImage($request->getImage() ?? $productCategory->getImage());
 
         $this->productCategoryRepository->save($productCategory, true);
 

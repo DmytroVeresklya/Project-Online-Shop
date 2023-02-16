@@ -24,7 +24,7 @@ use Symfony\Component\Routing\Annotation\Route;
     )
 ]
 #[Route(path: '/api/category/{id}/products', methods: 'GET')]
-final class ProductsOfCategoryGetAction extends AbstractController
+final class ProductCategoryGetProductsGetAction extends AbstractController
 {
     public function __construct(
         private readonly ProductService $productService,

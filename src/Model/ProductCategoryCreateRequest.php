@@ -4,18 +4,19 @@ namespace App\Model;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class ProductCategoryUpdateRequest
+class ProductCategoryCreateRequest
 {
-    private ?string $title = null;
+    #[NotBlank]
+    private string $title;
 
-    private ?string $image;
+    private ?string $image = null;
 
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
 
-    public function setTitle(?string $title): self
+    public function setTitle(string $title): self
     {
         $this->title = $title;
 

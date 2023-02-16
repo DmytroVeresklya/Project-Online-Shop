@@ -3,7 +3,6 @@
 namespace App\Tests\Service;
 
 use App\Entity\Product;
-use App\Entity\ProductCategory;
 use App\Exception\ProductCategoryNotFoundException;
 use App\Model\ProductListResponse;
 use App\ModelItem\ProductListItem;
@@ -11,13 +10,8 @@ use App\Repository\ProductCategoryRepository;
 use App\Repository\ProductRepository;
 use App\Service\ProductService;
 use App\Tests\AbstractTestCase;
-use DateTime;
+use App\Tests\MockUtils;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 class ProductServiceTest extends AbstractTestCase
 {
     public function testGetProductsByCategoryNotFound(): void
@@ -52,7 +46,7 @@ class ProductServiceTest extends AbstractTestCase
             ->willReturn(true)
         ;
 
-        $service = new ProductService($productRepository, $productCategoryRepository);
+        $service  = new ProductService($productRepository, $productCategoryRepository);
         $expected = new ProductListResponse([$this->createProductItemModel()]);
 
         $this->assertEquals($expected, $service->getProductsByCategory(13));
@@ -60,19 +54,7 @@ class ProductServiceTest extends AbstractTestCase
 
     private function createProduct(): Product
     {
-        $product = (new Product())
-            ->setTitle('test Title')
-            ->setDescription('test Description')
-            ->setAmount(1)
-            ->setPrice(400)
-            ->setProductCategory((new ProductCategory())->setTitle('test_category_title'))
-            ->setSlug('test Slug')
-            ->setCreatedAt(new DateTime('NOW'))
-            ->setImage('test Image')
-            ->setMadeIn('test Made_in')
-            ->setActive(false)
-            ->setSearchQueries(['test01'])
-        ;
+        $product = MockUtils::createProduct(MockUtils::createProductCategory()->setTitle('test_category_title'));
 
         $this->setEntityId($product, 109);
 
@@ -84,12 +66,12 @@ class ProductServiceTest extends AbstractTestCase
         return (new ProductListItem())
             ->setId(109)
             ->setTitle('test Title')
-            ->setDescription('test Description')
+            ->setDescription('testDescription')
             ->setAmount(1)
-            ->setPrice(400)
+            ->setPrice(300)
             ->setProductCategory('test_category_title')
-            ->setSlug('test Slug')
-            ->setImage('test Image')
-            ->setMadeIn('test Made_in');
+            ->setSlug('test-title')
+            ->setMadeIn('Ukraine')
+            ->setImage(null);
     }
 }

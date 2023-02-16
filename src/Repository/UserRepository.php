@@ -37,7 +37,7 @@ class UserRepository extends ServiceEntityRepository
         return null !== $this->findOneBy(['email' => $email]);
     }
 
-    public function getUserForId(int $userId): User
+    public function getUserById(int $userId): User
     {
         $user = $this->find($userId);
         if (!$user) {

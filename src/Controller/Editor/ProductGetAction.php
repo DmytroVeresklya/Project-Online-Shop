@@ -5,7 +5,6 @@ namespace App\Controller\Editor;
 use App\Model\ErrorResponse;
 use App\Model\ProductListResponse;
 use App\Service\EditorProductService;
-use App\Service\ProductService;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

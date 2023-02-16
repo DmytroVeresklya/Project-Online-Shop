@@ -22,7 +22,7 @@ class RoleService
 
     private function grantRole(int $userId, string $role): void
     {
-        $user = $this->userRepository->getUserForId($userId);
+        $user = $this->userRepository->getUserById($userId);
         $user->setRoles([$role]);
 
         $this->userRepository->save($user, true);

@@ -3,7 +3,7 @@
 namespace App\Controller\Editor;
 
 use App\Attribute\RequestBody;
-use App\Model\Editor\ProductUpdateRequest;
+use App\Model\Editor\ProductCreateRequest;
 use App\Model\ErrorResponse;
 use App\Model\IdResponse;
 use App\Service\EditorProductService;
@@ -26,11 +26,11 @@ use OpenApi\Attributes as OA;
         content: new Model(type: ErrorResponse::class)
     ),
     OA\Response(
-        response: 400,
+        response: 409,
         description: 'Product with same title already exist',
         content: new Model(type: ErrorResponse::class)
     ),
-    OA\RequestBody(content: new Model(type: ProductUpdateRequest::class))
+    OA\RequestBody(content: new Model(type: ProductCreateRequest::class))
 ]
 #[Route(path: '/api/editor/product/create', methods: ['POST'])]
 final class CreateProductPostAction extends AbstractController
@@ -40,7 +40,7 @@ final class CreateProductPostAction extends AbstractController
     ) {
     }
 
-    public function __invoke(#[RequestBody] ProductUpdateRequest $request): JsonResponse
+    public function __invoke(#[RequestBody] ProductCreateRequest $request): JsonResponse
     {
         return $this->json($this->editorProductService->createProduct($request));
     }

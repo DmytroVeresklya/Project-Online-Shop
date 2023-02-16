@@ -3,6 +3,8 @@
 namespace App\Tests;
 
 use App\Entity\User;
+use App\Repository\ProductRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Helmich\JsonAssert\JsonAssertions;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -17,6 +19,12 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 abstract class AbstractControllerTest extends WebTestCase
 {
     use JsonAssertions;
+
+    protected const VALID_USER_EMAIL = 'testValidUserEmail@mail.com';
+
+    protected const VALID_PASSWORD   = 'validPassword';
+
+    protected const DIR_UPLOAD_FILE  = 'public';
 
     protected KernelBrowser $client;
 
@@ -75,17 +83,26 @@ abstract class AbstractControllerTest extends WebTestCase
 
     private function createUser(string $email, string $password, array $roles): User
     {
-        $user = (new User())
-            ->setRoles($roles)
-            ->setFirstName($email)
-            ->setPhoneNumber($email)
-            ->setEmail($email);
+        $user = $this->getRepository(User::class)->findOneBy(['email' => $email]);
 
+        if (null === $user) {
+            $user = (new User())
+                ->setFirstName($email)
+                ->setPhoneNumber($email)
+                ->setEmail($email);
+        }
+
+        $user->setRoles($roles);
         $user->setPassword($this->hasher->hashPassword($user, $password));
 
         $this->em->persist($user);
         $this->em->flush();
 
         return $user;
+    }
+
+    protected function getRepository($entity)
+    {
+        return $this->em->getRepository($entity);
     }
 }
