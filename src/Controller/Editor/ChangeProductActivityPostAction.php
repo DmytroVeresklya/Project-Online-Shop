@@ -3,11 +3,8 @@
 namespace App\Controller\Editor;
 
 use App\Attribute\RequestBody;
-use App\Exception\ProductNotFoundException;
 use App\Model\Editor\ActivateProductRequest;
-use App\Model\Editor\ProductUpdateRequest;
 use App\Model\ErrorResponse;
-use App\Model\IdResponse;
 use App\Service\EditorProductService;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
