@@ -3,16 +3,54 @@
 
 {% block body %}
     <style>
-        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-        .example-wrapper #main-page { background: lightblue; padding: 2px 6px; }
+        .example-wrapper {
+            margin: 1em auto;
+            max-width: 800px;
+            width: 95%;
+            font: 18px/1.5 sans-serif;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
 
+        .category {
+            background : snow;
+            padding: 2px 6px;
+            box-sizing: border-box;
+            width: calc(33.33% - 10px);
+            margin-bottom: 20px;
+        }
+
+        .category img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            padding-top: 5px;
+
+        }
+
+        .category #category-title {
+            margin-bottom: 5px;
+            padding: 10px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 20%;
+            color: midnightblue;
+        }
     </style>
 
     <div class="example-wrapper">
-            {% for category in categories.items %}
-            <div id="main-page">
-                <h4>{{ category.title }}</h4>
+        {% for category in categories.items %}
+            <div class="category">
+                {% if category.image %}
+                    <img src="{{ asset(category.image) }}" alt="image not found" loading="lazy">
+                {% else %}
+                    <img src="{{ asset('images/category/default-image_450.png') }}" alt="image not found" loading="lazy"/>
+                {% endif %}
+                <span id="category-title">{{ category.title }}</span>
             </div>
-            {% endfor %}
+        {% endfor %}
     </div>
 {% endblock %}

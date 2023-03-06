@@ -4,7 +4,7 @@ namespace App\Tests\Service;
 
 use App\Entity\Subscriber;
 use App\Exception\SubscriberAlreadyExistException;
-use App\ModelItem\SubscribeRequest;
+use App\Model\SubscribeRequest;
 use App\Repository\SubscriberRepository;
 use App\Service\SubscribeService;
 use App\Tests\AbstractTestCase;

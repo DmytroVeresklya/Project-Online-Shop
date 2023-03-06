@@ -4,8 +4,8 @@ namespace App\Service;
 
 use App\Entity\Product;
 use App\Exception\ProductCategoryNotFoundException;
+use App\Model\ProductListItem;
 use App\Model\ProductListResponse;
-use App\ModelItem\ProductListItem;
 use App\Repository\ProductCategoryRepository;
 use App\Repository\ProductRepository;
 

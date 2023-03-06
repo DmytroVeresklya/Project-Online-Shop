@@ -14,7 +14,7 @@ class ProductCategory
     #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
     #[ORM\SequenceGenerator(sequenceName: 'product_category_id', allocationSize: 1, initialValue: 100)]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(name: 'title', length: 127, nullable: false)]
     private string $title;
@@ -33,7 +33,7 @@ class ProductCategory
         $this->products = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

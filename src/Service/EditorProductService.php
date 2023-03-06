@@ -8,9 +8,10 @@ use App\Exception\ProductAlreadyExistException;
 use App\Model\Editor\ActivateProductRequest;
 use App\Model\Editor\ProductCreateRequest;
 use App\Model\Editor\ProductUpdateRequest;
+use App\Model\Editor\ProductUpsertRequestInterface;
 use App\Model\Editor\UploadCoverResponse;
 use App\Model\IdResponse;
-use App\ModelItem\ProductListItem;
+use App\Model\ProductListItem;
 use App\Repository\ProductCategoryRepository;
 use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -49,7 +50,7 @@ class EditorProductService
         return new IdResponse($this->upsertProduct($product, $request));
     }
 
-    private function upsertProduct(Product $product, ProductUpdateRequest|ProductCreateRequest $request): int
+    private function upsertProduct(Product $product, ProductUpsertRequestInterface $request): int
     {
         if ($request->getTitle()) {
             $slug = $this->slugger->slug($request->getTitle());
@@ -86,13 +87,13 @@ class EditorProductService
         $this->productRepository->remove($product, true);
     }
 
-    public function uploadCover(int $id, UploadedFile $file): UploadCoverResponse
+    public function uploadCover(int $id, UploadedFile $file): void
     {
         $product = $this->productRepository->getProductById($id);
 
         $oldImage = $product->getImage();
 
-        $link = $this->uploadService->uploadProductFile($id, $file);
+        $link = $this->uploadService->uploadFile($product, $file);
 
         $product->setImage($link);
 
@@ -101,8 +102,6 @@ class EditorProductService
         if (null !== $product->getImage()) {
             $this->uploadService->deleteProductFile($product->getId(), basename($oldImage));
         }
-
-        return new UploadCoverResponse($link);
     }
 
     public function getProductById(int $productId): ProductListItem

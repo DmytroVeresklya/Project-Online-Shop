@@ -9,7 +9,7 @@ use App\Model\Editor\ProductCreateRequest;
 use App\Model\Editor\ProductUpdateRequest;
 use App\Model\Editor\UploadCoverResponse;
 use App\Model\IdResponse;
-use App\ModelItem\ProductListItem;
+use App\Model\ProductListItem;
 use App\Repository\ProductCategoryRepository;
 use App\Repository\ProductRepository;
 use App\Service\EditorProductService;
@@ -62,7 +62,7 @@ class EditorProductServiceTest extends AbstractTestCase
 
     public function testUploadCoverSuccess(): void
     {
-        $file = new UploadedFile('path', 'field', null, UPLOAD_ERR_NO_FILE, true);
+        $file = new UploadedFile(path: 'path', originalName: 'field', error: UPLOAD_ERR_NO_FILE, test: true);
         $product = MockUtils::createProduct()->setImage(null);
         $this->setEntityId($product, 1);
 
@@ -75,19 +75,17 @@ class EditorProductServiceTest extends AbstractTestCase
             ->method('save');
 
         $this->uploadService->expects($this->once())
-            ->method('uploadProductFile')
-            ->with(1, $file)
+            ->method('uploadFile')
+            ->with($product, $file)
             ->willReturn('http://localhost/test.jpg');
 
-        $this->assertEquals(
-            new UploadCoverResponse('http://localhost/test.jpg'),
-            $this->createService()->uploadCover(1, $file)
-        );
+        $this->createService()->uploadCover(1, $file);
+        $this->assertEquals('http://localhost/test.jpg', $product->getImage());
     }
 
     public function testUploadCoverRemoveOld(): void
     {
-        $file = new UploadedFile('path', 'field', null, UPLOAD_ERR_NO_FILE, true);
+        $file = new UploadedFile(path: 'path', originalName: 'field', error: UPLOAD_ERR_NO_FILE, test: true);
         $product = MockUtils::createProduct()->setImage('http://localhost/old.png');
         $this->setEntityId($product, 1);
 
@@ -100,18 +98,16 @@ class EditorProductServiceTest extends AbstractTestCase
             ->method('save');
 
         $this->uploadService->expects($this->once())
-            ->method('uploadProductFile')
-            ->with(1, $file)
+            ->method('uploadFile')
+            ->with($product, $file)
             ->willReturn('http://localhost/test.jpg');
 
         $this->uploadService->expects($this->once())
             ->method('deleteProductFile')
             ->with(1, basename($product->getImage()));
 
-        $this->assertEquals(
-            new UploadCoverResponse('http://localhost/test.jpg'),
-            $this->createService()->uploadCover(1, $file)
-        );
+        $this->createService()->uploadCover(1, $file);
+        $this->assertEquals('http://localhost/test.jpg', $product->getImage());
     }
 
     public function testGetProductById(): void

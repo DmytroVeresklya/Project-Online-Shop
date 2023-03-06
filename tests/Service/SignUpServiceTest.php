@@ -2,9 +2,8 @@
 
 namespace App\Tests\Service;
 
-use App\Entity\User;
 use App\Exception\UserAlreadyExistException;
-use App\ModelItem\SignUpRequest;
+use App\Model\SignUpRequest;
 use App\Repository\UserRepository;
 use App\Service\SignUpService;
 use App\Tests\MockUtils;

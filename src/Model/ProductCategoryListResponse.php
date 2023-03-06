@@ -2,8 +2,6 @@
 
 namespace App\Model;
 
-use App\ModelItem\ProductCategoryListItem;
-
 class ProductCategoryListResponse
 {
     /**

@@ -2,7 +2,7 @@
 
 namespace App\EventListener;
 
-use App\EntityDateTimeAwareInterface;
+use App\Entity\EntityDateTimeAwareInterface;
 use DateTime;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;

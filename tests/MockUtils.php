@@ -20,7 +20,7 @@ class MockUtils
 
     public static function createProductCategory(): ProductCategory
     {
-        return (new ProductCategory())->setTitle('testTitle')->setSlug('testslug');
+        return (new ProductCategory())->setTitle('testTitle')->setSlug('testslug')->setImage('testImage');
     }
 
     public static function createProduct(ProductCategory $productCategory = null): Product
