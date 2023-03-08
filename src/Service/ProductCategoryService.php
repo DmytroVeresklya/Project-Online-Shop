@@ -6,12 +6,15 @@ use App\Attribute\RequestBody;
 use App\Entity\ProductCategory;
 use App\Exception\ProductCategoryAlreadyExistException;
 use App\Exception\ProductCategoryNotEmptyException;
+use App\Model\Editor\ProductCategoryCreateRequestUpsertRequest;
+use App\Model\Editor\ProductCategoryUpdateRequestUpsertRequest;
+use App\Model\Editor\ProductCategoryUpsertRequestInterface;
+use App\Model\Editor\UploadCoverResponse;
 use App\Model\IdResponse;
-use App\Model\ProductCategoryCreateRequest;
+use App\Model\ProductCategoryListItem;
 use App\Model\ProductCategoryListResponse;
-use App\Model\ProductCategoryUpdateRequest;
-use App\ModelItem\ProductCategoryListItem;
 use App\Repository\ProductCategoryRepository;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ProductCategoryService
@@ -19,6 +22,7 @@ class ProductCategoryService
     public function __construct(
         private readonly ProductCategoryRepository $productCategoryRepository,
         private readonly SluggerInterface          $slugger,
+        private readonly UploadService             $uploadService,
     ) {
     }
 
@@ -30,6 +34,7 @@ class ProductCategoryService
                 $productCategory->getId(),
                 $productCategory->getTitle(),
                 $productCategory->getSlug(),
+                $productCategory->getImage()
             ),
             $categories
         );
@@ -48,15 +53,17 @@ class ProductCategoryService
         $this->productCategoryRepository->remove($category, true);
     }
 
-    public function createProductCategory(#[RequestBody] ProductCategoryCreateRequest $request): IdResponse
+    public function createProductCategory(#[RequestBody] ProductCategoryCreateRequestUpsertRequest $request): IdResponse
     {
         $productCategory = new ProductCategory();
 
         return new IdResponse($this->upsertCategory($productCategory, $request));
     }
 
-    public function updateProductCategory(int $id, #[RequestBody] ProductCategoryUpdateRequest $request): IdResponse
-    {
+    public function updateProductCategory(
+        int $id,
+        #[RequestBody] ProductCategoryUpdateRequestUpsertRequest $request
+    ): IdResponse {
         $productCategory = $this->productCategoryRepository->getProductCategoryById($id);
 
         return new IdResponse($this->upsertCategory($productCategory, $request));
@@ -64,7 +71,7 @@ class ProductCategoryService
 
     private function upsertCategory(
         ProductCategory $productCategory,
-        ProductCategoryUpdateRequest|ProductCategoryCreateRequest $request
+        ProductCategoryUpsertRequestInterface $request
     ): int {
         if ($request->getTitle()) {
             $slug = $this->slugger->slug($request->getTitle());
@@ -82,5 +89,25 @@ class ProductCategoryService
         $this->productCategoryRepository->save($productCategory, true);
 
         return $productCategory->getId();
+    }
+
+
+    public function uploadImage(int $id, UploadedFile $file): string
+    {
+        $productCategory = $this->productCategoryRepository->getProductCategoryById($id);
+
+        $oldImage = $productCategory->getImage();
+
+        $link = $this->uploadService->uploadFile($productCategory, $file);
+
+        $productCategory->setImage($link);
+
+        $this->productCategoryRepository->save($productCategory, true);
+
+        if (null !== $productCategory->getImage()) {
+            $this->uploadService->deleteProductCategoryFile($productCategory->getId(), basename($oldImage));
+        }
+
+        return $link;
     }
 }

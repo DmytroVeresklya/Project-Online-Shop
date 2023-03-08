@@ -4,7 +4,7 @@ namespace App\Service;
 
 use App\Entity\Subscriber;
 use App\Exception\SubscriberAlreadyExistException;
-use App\ModelItem\SubscribeRequest;
+use App\Model\SubscribeRequest;
 use App\Repository\SubscriberRepository;
 
 class SubscribeService

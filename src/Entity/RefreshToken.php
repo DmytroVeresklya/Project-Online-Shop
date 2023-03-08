@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\EntityDateTimeAwareInterface;
 use App\EventListener\EntityDateTimeListener;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;

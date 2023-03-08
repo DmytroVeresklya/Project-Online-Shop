@@ -4,7 +4,7 @@ namespace App\Service;
 
 use App\Entity\User;
 use App\Exception\UserAlreadyExistException;
-use App\ModelItem\SignUpRequest;
+use App\Model\SignUpRequest;
 use App\Repository\UserRepository;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
 use Symfony\Component\HttpFoundation\Response;

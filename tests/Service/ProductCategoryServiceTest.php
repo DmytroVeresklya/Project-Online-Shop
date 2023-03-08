@@ -4,16 +4,16 @@ namespace App\Tests\Service;
 
 use App\Entity\ProductCategory;
 use App\Exception\ProductCategoryNotEmptyException;
+use App\Model\Editor\ProductCategoryCreateRequestUpsertRequest;
+use App\Model\Editor\ProductCategoryUpdateRequestUpsertRequest;
 use App\Model\IdResponse;
-use App\Model\ProductCategoryCreateRequest;
+use App\Model\ProductCategoryListItem;
 use App\Model\ProductCategoryListResponse;
-use App\Model\ProductCategoryUpdateRequest;
-use App\ModelItem\ProductCategoryListItem;
 use App\Repository\ProductCategoryRepository;
 use App\Service\ProductCategoryService;
+use App\Service\UploadService;
 use App\Tests\AbstractTestCase;
 use App\Tests\MockUtils;
-use Symfony\Component\String\AbstractUnicodeString;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\String\UnicodeString;
 
@@ -28,13 +28,15 @@ class ProductCategoryServiceTest extends AbstractTestCase
 
     private SluggerInterface          $slugger;
 
+    private UploadService             $uploadService;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->productCategoryRepository = $this->createMock(ProductCategoryRepository::class);
-
         $this->slugger                   = $this->createMock(SluggerInterface::class);
+        $this->uploadService             = $this->createMock(UploadService::class);
     }
 
     public function testGetCategories(): void
@@ -47,7 +49,7 @@ class ProductCategoryServiceTest extends AbstractTestCase
             ->willReturn([$category]);
 
         $service = $this->getProductCategoryService();
-        $expected = new ProductCategoryListResponse([new ProductCategoryListItem(7, 'testTitle', 'testslug')]);
+        $expected = new ProductCategoryListResponse([new ProductCategoryListItem(7, 'testTitle', 'testslug', 'testImage')]);
 
         $this->assertEquals($expected, $service->getCategories());
     }
@@ -74,7 +76,7 @@ class ProductCategoryServiceTest extends AbstractTestCase
 
     public function testCreateProductCategory(): void
     {
-        $request = (new ProductCategoryCreateRequest())->setTitle('test')->setImage('test');
+        $request = (new ProductCategoryCreateRequestUpsertRequest())->setTitle('test')->setImage('test');
 
         $this->slugger->expects($this->once())
             ->method('slug')
@@ -107,7 +109,7 @@ class ProductCategoryServiceTest extends AbstractTestCase
             ->with(9)
             ->willReturn($exceptedProductCategory);
 
-        $request = (new ProductCategoryUpdateRequest())->setImage('test');
+        $request = (new ProductCategoryUpdateRequestUpsertRequest())->setImage('test');
 
         $this->productCategoryRepository->expects($this->once())
             ->method('save')
@@ -121,6 +123,6 @@ class ProductCategoryServiceTest extends AbstractTestCase
 
     private function getProductCategoryService(): ProductCategoryService
     {
-        return (new ProductCategoryService($this->productCategoryRepository, $this->slugger));
+        return (new ProductCategoryService($this->productCategoryRepository, $this->slugger, $this->uploadService));
     }
 }

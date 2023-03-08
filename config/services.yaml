@@ -10,13 +10,15 @@ parameters:
         App\Exception\ProductCategoryNotFoundException: { code: 404, hidden: false }
         App\Exception\ProductCategoryNotEmptyException: { code: 400, hidden: false }
         App\Exception\ProductCategoryAlreadyExistException: { code: 409, hidden: false }
-        App\Exception\SubscriberAlreadyExistException: { code: 409, hidden: false }
-        App\Exception\RequestBodyConvertException: { code: 400, hidden: false }
-        App\Exception\UserAlreadyExistException: { code: 409, hidden: false }
-        App\Exception\UserNotFoundException: { code: 404, hidden: false }
         App\Exception\ProductAlreadyExistException: { code: 409, hidden: false }
         App\Exception\ProductNotFoundException: { code: 404, hidden: false }
+        App\Exception\RequestBodyConvertException: { code: 400, hidden: false }
+        App\Exception\SubscriberAlreadyExistException: { code: 409, hidden: false }
+        App\Exception\UnsupportedEntityTypeException: { code: 409, hidden: false, loggable: true }
         App\Exception\UploadFileInvalidTypeException: { code: 400, hidden: false }
+        App\Exception\UserAlreadyExistException: { code: 409, hidden: false }
+        App\Exception\UserNotFoundException: { code: 404, hidden: false }
+        App\Exception\ValidationException: { code: 400, hidden: false }
 
 services:
     # default configuration for services in *this* file

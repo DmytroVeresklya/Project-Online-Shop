@@ -2,6 +2,8 @@
 
 namespace App\Tests;
 
+use App\Entity\Product;
+use App\Entity\ProductCategory;
 use App\Entity\User;
 use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
@@ -99,6 +101,67 @@ abstract class AbstractControllerTest extends WebTestCase
         $this->em->flush();
 
         return $user;
+    }
+
+    protected function createProduct(?array $parameters): Product
+    {
+        $product = $this->getRepository(Product::class)->findOneBy(['title' => $parameters['title'] ?? null]);
+
+        if (null === $product) {
+            $product = new Product();
+            $product->setTitle($parameters['title'] ?? 'test');
+            $product->setDescription($parameters['description'] ?? 'test');
+            $product->setSlug($parameters['slug'] ?? 'test');
+        }
+
+        if ($parameters['image']) {
+            $product->setImage($parameters['image']);
+        }
+        if (isset($parameters['productCategory'])) {
+            $product->setProductCategory($this->createProductCategory($parameters['productCategory']));
+        }
+        if (isset($parameters['searchQueries'])) {
+            $product->setSearchQueries($parameters['searchQueries']);
+        }
+        if (isset($parameters['price'])) {
+            $product->setPrice($parameters['price']);
+        }
+        if (isset($parameters['amount'])) {
+            $product->setAmount($parameters['amount']);
+        }
+        if (isset($parameters['madeIn'])) {
+            $product->setMadeIn($parameters['madeIn']);
+        }
+        if (isset($parameters['active'])) {
+            $product->setActive($parameters['active']);
+        }
+
+        $this->em->persist($product);
+        $this->em->flush();
+
+        return $product;
+    }
+
+    protected function createProductCategory(array $parameters): ProductCategory
+    {
+        $productCategory = $this->getRepository(ProductCategory::class)->findOneBy([
+            'title' => $parameters['title'] ?? null,
+        ]);
+
+        if (null === $productCategory) {
+            $productCategory = new ProductCategory();
+            $productCategory->setTitle($parameters['title'] ?? 'test');
+            $productCategory->setSlug($parameters['slug'] ?? 'test');
+        }
+
+        if (isset($parameters['image'])) {
+            $productCategory->setImage($parameters['image']);
+        }
+
+        $this->em->persist($productCategory);
+        $this->em->flush();
+
+        return $productCategory;
     }
 
     protected function getRepository($entity)

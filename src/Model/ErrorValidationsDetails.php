@@ -2,8 +2,6 @@
 
 namespace App\Model;
 
-use App\ModelItem\ErrorValidationsDetailsItem;
-
 class ErrorValidationsDetails
 {
     private array $violations = [];

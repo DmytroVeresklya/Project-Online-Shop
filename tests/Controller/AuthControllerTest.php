@@ -10,11 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AuthControllerTest extends AbstractControllerTest
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     public function testSignUp(): void
     {
         $data = json_encode([

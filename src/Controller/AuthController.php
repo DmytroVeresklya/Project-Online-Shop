@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Attribute\RequestBody;
 use App\Model\ErrorResponse;
-use App\ModelItem\SignUpRequest;
+use App\Model\SignUpRequest;
 use App\Service\SignUpService;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;

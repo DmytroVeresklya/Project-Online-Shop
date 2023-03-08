@@ -5,7 +5,7 @@ namespace App\Model\Editor;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\PositiveOrZero;
 
-class ProductUpdateRequest
+class ProductUpdateRequest implements ProductUpsertRequestInterface
 {
     private ?string $title = null;
 
