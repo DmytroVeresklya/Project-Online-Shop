@@ -1,0 +1,65 @@
+version: "3.3"
+
+services:
+  php-fpm:
+    container_name: php-fpm
+    build:
+      context: ./../
+      dockerfile: ./docker/php-fpm/Dockerfile
+      args:
+        - PUID=${PUID}
+        - PGID=${PGID}
+        - INSTALL_XDEBUG=${INSTALL_XDEBUG}
+    environment:
+      PHP_IDE_CONFIG: "serverName=Docker"
+    volumes:
+      - /var/www/${PROJECT_NAME}/vendor/
+      - ./../:/var/www/${PROJECT_NAME}/
+
+  nginx:
+    container_name: nginx
+    build:
+      context: ./nginx
+    ports:
+      - ${NGINX_HOST_HTTP_PORT}:80
+    volumes:
+      - ..:/var/www/${PROJECT_NAME}:rw
+    depends_on:
+      - php-fpm
+
+  database:
+    container_name: postgres
+    image: postgres:13.3-alpine
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+
+  database-test:
+    container_name: postgres-test
+    image: postgres:13.3-alpine
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5433:5432"
+
+  node:
+    container_name: node
+    build:
+      context: ./../
+      dockerfile: ./docker/node/Dockerfile
+    ports:
+      - "8080:80"
+    volumes:
+      - ..:/var/www/${PROJECT_NAME}:rw
+    depends_on:
+      - php-fpm
+
+volumes:
+  db_data:

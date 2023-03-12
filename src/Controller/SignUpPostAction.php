@@ -35,7 +35,7 @@ use Symfony\Component\Routing\Annotation\Route;
     OA\RequestBody(content: new Model(type: SignUpRequest::class))
 ]
 #[Route(path: '/api/signUp', methods: ['POST'])]
-final class AuthController extends AbstractController
+final class SignUpPostAction extends AbstractController
 {
     public function __construct(private readonly SignUpService $signUpService)
     {

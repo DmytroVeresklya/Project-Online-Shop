@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/conversations', name: 'conversations.')]
-class ConversationController extends AbstractController
+final class ConversationController extends AbstractController
 {
     public function __construct(
         private readonly UserRepository         $userRepository,

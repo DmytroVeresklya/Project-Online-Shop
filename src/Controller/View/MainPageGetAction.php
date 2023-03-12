@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\View;
 
 use App\Model\ErrorResponse;
-use App\Model\ProductListResponse;
-use App\Service\ProductService;
+use App\Service\ProductCategoryService;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
     OA\Response(
         response: 200,
         description: 'Return published product by category',
-        content: new Model(type: ProductListResponse::class)
+        content: new Model(type: Response::class)
     ),
     OA\Response(
         response: 404,
@@ -23,16 +22,18 @@ use Symfony\Component\Routing\Annotation\Route;
         content: new Model(type: ErrorResponse::class)
     )
 ]
-#[Route(path: '/api/category/{id}/products', methods: 'GET')]
-final class ProductCategoryGetProductsGetAction extends AbstractController
+#[Route('/', methods: ['GET'])]
+class MainPageGetAction extends AbstractController
 {
     public function __construct(
-        private readonly ProductService $productService,
+        private readonly ProductCategoryService $productCategoryService,
     ) {
     }
 
-    public function __invoke(int $id): Response
+    public function __invoke(): Response
     {
-        return $this->json($this->productService->getProductsByCategory($id));
+        return $this->render('mainPage/mainPage.html.twig', [
+            'categories' => $this->productCategoryService->getCategories(),
+        ]);
     }
 }

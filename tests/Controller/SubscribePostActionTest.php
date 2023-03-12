@@ -5,7 +5,7 @@ namespace App\Tests\Controller;
 use App\Tests\AbstractControllerTest;
 use Symfony\Component\HttpFoundation\Response;
 
-class SubscribeControllerTest extends AbstractControllerTest
+class SubscribePostActionTest extends AbstractControllerTest
 {
     public function testSubscribeControllerSuccess(): void
     {
