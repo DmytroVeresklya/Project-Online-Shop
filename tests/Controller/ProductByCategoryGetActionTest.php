@@ -5,7 +5,7 @@ namespace App\Tests\Controller;
 use App\Tests\AbstractControllerTest;
 use App\Tests\MockUtils;
 
-class ProductCategoryGetProductsGetActionTest extends AbstractControllerTest
+class ProductByCategoryGetActionTest extends AbstractControllerTest
 {
     public function testProductCategoryGetProductsGetActionSuccess(): void
     {

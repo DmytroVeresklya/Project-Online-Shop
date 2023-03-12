@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Model\ErrorResponse;
 use App\Service\Admin\RoleService;
@@ -23,7 +23,7 @@ use Symfony\Component\Routing\Annotation\Route;
     )
 ]
 #[Route(path: '/api/admin/grantEditor/{userId}', methods: ['POST'])]
-final class AdminController extends AbstractController
+final class GrantEditorPostAction extends AbstractController
 {
     public function __construct(
         private readonly RoleService $roleService,

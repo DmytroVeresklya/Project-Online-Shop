@@ -30,7 +30,7 @@ use Symfony\Component\Routing\Annotation\Route;
     OA\RequestBody(content: new Model(type: SubscribeRequest::class))
 ]
 #[Route('/api/subscribe', methods: ['POST'])]
-final class SubscribeController extends AbstractController
+final class SubscribePostAction extends AbstractController
 {
     public function __construct(private readonly SubscribeService $subscriberService)
     {

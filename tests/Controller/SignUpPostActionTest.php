@@ -2,13 +2,13 @@
 
 namespace App\Tests\Controller;
 
-use App\Controller\AuthController;
+use App\Controller\SignUpPostAction;
 use App\Tests\AbstractControllerTest;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class AuthControllerTest extends AbstractControllerTest
+class SignUpPostActionTest extends AbstractControllerTest
 {
     public function testSignUp(): void
     {

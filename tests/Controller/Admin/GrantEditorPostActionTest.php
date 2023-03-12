@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Tests\Controller;
+namespace App\Tests\Controller\Admin;
 
-use App\Controller\AdminController;
 use App\Tests\AbstractControllerTest;
-use PHPUnit\Framework\TestCase;
 
-class AdminControllerTest extends AbstractControllerTest
+class GrantEditorPostActionTest extends AbstractControllerTest
 {
     protected function setUp(): void
     {

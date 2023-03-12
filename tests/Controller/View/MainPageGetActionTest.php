@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Controller;
+namespace App\Tests\Controller\View;
 
 use App\Tests\AbstractControllerTest;
 use App\Tests\MockUtils;
@@ -31,5 +31,6 @@ class MainPageGetActionTest extends AbstractControllerTest
             selector: 'ul',
             text:     'Головна Товари та послуги Доставка і оплата Умови обміну і повернення Про нас'
         );
+        $this->assertSelectorExists(selector: 'img');
     }
 }

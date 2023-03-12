@@ -4,25 +4,25 @@ namespace App\Service;
 
 use Imagine\Image\Box;
 use Imagine\Imagick\Imagine;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ImageOptimizer
 {
     public const MAX_WIDTH = 450;
     public const MAX_HEIGHT = 450;
 
-    private $imagine;
+    private Imagine $imagine;
 
-    public function __construct()
+    public function __construct(private readonly ContainerInterface $container)
     {
         $this->imagine = new Imagine();
     }
 
     public function resize(string $filename): void
     {
-        $width  = self::MAX_WIDTH;
-        $height = self::MAX_HEIGHT;
+        $publicDir = $this->container->getParameter('publicDir');
 
-        $photo = $this->imagine->open('/var/www/dogmarket/public' . $filename);
-        $photo->resize(new Box($width, $height))->save('/var/www/dogmarket/public' . $filename);
+        $photo = $this->imagine->open($publicDir . $filename);
+        $photo->resize(new Box(self::MAX_WIDTH, self::MAX_HEIGHT))->save($publicDir . $filename);
     }
 }
